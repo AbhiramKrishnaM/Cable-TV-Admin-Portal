@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
+import authRoutes from "./routes/authRoutes";
 import { connectDB } from "./config/database";
 
 // Load environment variables
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
 // Basic route

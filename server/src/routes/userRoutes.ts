@@ -6,14 +6,18 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/userController";
+import { authenticate, authorize } from "../middleware/auth";
 
 const router = express.Router();
 
-// User routes
-router.get("/", getAllUsers);
-router.get("/:id", getUserById);
-router.post("/", createUser);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+// All routes require authentication
+router.use(authenticate);
+
+// Admin-only routes
+router.get("/", authorize("admin"), getAllUsers);
+router.get("/:id", authorize("admin"), getUserById);
+router.post("/", authorize("admin"), createUser);
+router.put("/:id", authorize("admin"), updateUser);
+router.delete("/:id", authorize("admin"), deleteUser);
 
 export default router;
